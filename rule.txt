@@ -2,8 +2,15 @@
 client->server
 {
     "mode" = "login"
+    "name" = <>
     "account" = <>
     "pwd" = <>
+}
+server->client
+{
+    "mode" = "reply"
+    "type" = <>
+    "hit" = <>
 }
 登录
 client->server
@@ -13,19 +20,40 @@ client->server
 }
 server->client
 {
+    "mode" = "reply"
     "randB" = <rand>
 }
 client->server
 {
+    "mode" = "reply"
     "account" = <>
     "pwd" = sha256<randA + pwd + randB>
+}
+server->client
+{
+    "mode" = "reply"
+    "type" = "suc"/"fail"
+    "session" = <>
+}
+获得当前在线名单
+client->server
+{
+    "mode" = ""
 }
 聊天
 client->server
 {
-    "mode" = "private"/"public"
+    "mode" = "msg"
+    "to" = ""/<>
     "msg" = <>
 }
+server->client
+{
+    "mode" = "reply"
+    "type" = "suc"/"fail"
+
+}
+server->other client
 退出
 client->server
 {
