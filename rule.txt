@@ -1,0 +1,35 @@
+注册
+client->server
+{
+    "mode" = "login"
+    "account" = <>
+    "pwd" = <>
+}
+登录
+client->server
+{
+    "mode" = "login"
+    "randA" = <rand>
+}
+server->client
+{
+    "randB" = <rand>
+}
+client->server
+{
+    "account" = <>
+    "pwd" = sha256<randA + pwd + randB>
+}
+聊天
+client->server
+{
+    "mode" = "private"/"public"
+    "msg" = <>
+}
+退出
+client->server
+{
+    "mode" = "logout"
+    "account"
+    "pwd" = sha256<randA + pwd + randB>
+}
