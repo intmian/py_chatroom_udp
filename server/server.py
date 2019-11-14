@@ -1,9 +1,14 @@
-import tool.UdpServer
-import server.s_router as rout
+from net_tool.Server import Server, Router
+
+# 路径
+udp_map = {
+
+}
 
 
 def main():
-    chat_server = tool.UdpServer.Server(rout.router)
+    udp_router = Router(udp_map)
+    chat_server = Server(udp_router)
     chat_server.listen()
 
 

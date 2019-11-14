@@ -1,4 +1,4 @@
-from tool.netIo import NetIo, UDP_IO
+from net_tool.netIo import NetIo, UDP_IO
 from json import dumps
 
 
