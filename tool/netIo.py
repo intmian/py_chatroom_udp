@@ -7,7 +7,7 @@ class NetIo:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def send(self, address_port: (str, int), content: bytes) -> bool:
+    def send(self, addr: tuple[str, int], content: bytes) -> bool:
         pass
 
     @abstractmethod
@@ -18,16 +18,15 @@ class NetIo:
 class UdpIo(NetIo):
 
     def __init__(self, port: int = 23333):
-        self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        # 绑定 客户端口和地址:
-        self.s.bind(('127.0.0.1', port))
+        self.__socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.__socket.bind(('127.0.0.1', port))
 
-    def send(self, address_port: (str, int), content: bytes) -> bool:
-        data_len = self.s.sendto(content, address_port)
+    def send(self, addr: tuple[str, int], content: bytes) -> bool:
+        data_len = self.__socket.sendto(content, addr)
         return len(content) == data_len
 
     def receive(self, buff_size: int = 1024) -> tuple[bytes, Any]:
-        return self.s.recvfrom(buff_size)
+        return self.__socket.recvfrom(buff_size)
 
 
 UDP_IO = UdpIo()

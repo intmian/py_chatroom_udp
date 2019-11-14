@@ -1,44 +1,51 @@
+UDP 无状态
 注册
 client->server
 {
-    "mode" = "login"
+    "mode" = "signUp"
     "name" = <>
     "account" = <>
     "pwd" = <>
 }
 server->client
 {
-    "mode" = "reply"
+    "mode" = "replySighUp"
     "type" = <>
     "hit" = <>
 }
 登录
 client->server
 {
-    "mode" = "login"
+    "mode" = "loginA"
     "randA" = <rand>
 }
 server->client
 {
-    "mode" = "reply"
+    "mode" = "replyLoginA"
     "randB" = <rand>
 }
 client->server
 {
-    "mode" = "reply"
+    "mode" = "login"
     "account" = <>
     "pwd" = sha256<randA + pwd + randB>
 }
 server->client
 {
-    "mode" = "reply"
-    "type" = "suc"/"fail"
-    "session" = <>
+    "mode" = "replyLogin"
+    "success" = <>
+    "cookie" = <sha256<pwd>>
 }
 获得当前在线名单
 client->server
 {
-    "mode" = ""
+    "mode" = "List"
+    "cookie" =
+}
+server->client
+{
+    "status" = True/False(登录)
+    "list" = []
 }
 聊天
 client->server
@@ -49,15 +56,19 @@ client->server
 }
 server->client
 {
-    "mode" = "reply"
+    "mode" = "replyMsg"
     "type" = "suc"/"fail"
-
 }
-server->other client
+
+server->client
+{
+    "mode" = "getMsg"
+    "from" = <>/""
+    "msg" = <>
+}
 退出
 client->server
 {
     "mode" = "logout"
-    "account"
-    "pwd" = sha256<randA + pwd + randB>
+    "cookie" = <>
 }
