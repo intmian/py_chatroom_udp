@@ -1,9 +1,5 @@
 from net_tool.Server import Server, Router
-
-# 路径
-udp_map = {
-
-}
+from server.s_router import udp_map
 
 
 def main():
