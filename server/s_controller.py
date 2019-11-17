@@ -6,3 +6,4 @@ def test(addr, args):
     print(args)
 
 def sign_up(addr,args):
+    pass

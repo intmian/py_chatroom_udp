@@ -8,5 +8,5 @@ def main():
     chat_server.listen()
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     main()
