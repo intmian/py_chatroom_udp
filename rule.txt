@@ -5,45 +5,36 @@ client->server
     "mode" = "signUp"
     "name" = <>
     "account" = <>
-    "pwd" = <>
+    "pwd" = sha256<>
 }
 server->client
 {
-    "mode" = "replySighUp"
+    "mode" = "replySignUp"
     "type" = <>
     "hit" = <>
 }
 登录
 client->server
 {
-    "mode" = "loginA"
-    "randA" = <rand>
-}
-server->client
-{
-    "mode" = "replyLoginA"
-    "randB" = <rand>
-}
-client->server
-{
     "mode" = "login"
     "account" = <>
-    "pwd" = sha256<randA + pwd + randB>
+    "pwd" = sha256<pwd>
 }
 server->client
 {
     "mode" = "replyLogin"
     "success" = <>
-    "cookie" = <sha256<pwd>>
+    "cookie" = <>
 }
 获得当前在线名单
 client->server
 {
-    "mode" = "List"
+    "mode" = "getList"
     "cookie" =
 }
 server->client
 {
+    "mode" = "replyList"
     "status" = True/False(登录)
     "list" = []
 }
@@ -53,17 +44,19 @@ client->server
     "mode" = "msg"
     "to" = ""/<>
     "msg" = <>
+    "cookie" = <>
 }
 server->client
 {
     "mode" = "replyMsg"
-    "type" = "suc"/"fail"
+    "type" = bool
 }
 
 server->client
 {
     "mode" = "getMsg"
-    "from" = <>/""
+    "from" = ""
+    "private" = bool
     "msg" = <>
 }
 退出
@@ -71,4 +64,9 @@ client->server
 {
     "mode" = "logout"
     "cookie" = <>
+}
+server->client
+{
+    "mode" = "replyLogout"
+    "type" = bool
 }

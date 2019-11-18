@@ -27,13 +27,13 @@ def sign_up(addr, args):
         UDP_SENIOR_IO.send_json(addr, {
             "mode": "replySighUp",
             "type": True,
-            "hit": ""
+            "hint": ""
         })
     else:
         UDP_SENIOR_IO.send_json(addr, {
-            "mode": "replySighUp",
+            "mode": "replySignUp",
             "type": False,
-            "hit": "账号名或用户名重复"
+            "hint": "账号名或用户名重复"
         })
 
 
@@ -73,11 +73,12 @@ def get_list(addr, args):
         })
 
 
-def send_msg(addr: Tuple[str, int], msg: str, from_name: str):
+def send_msg(addr: Tuple[str, int], msg: str, from_name: str, private: bool):
     UDP_SENIOR_IO.send_json(addr, {
         "mode": "getMsg",
         "from": from_name,
-        "msg": msg
+        "msg": msg,
+        "private": private
     })
 
 
@@ -97,9 +98,9 @@ def msg(addr, args):
         if to == "":
             o: OnlineList = CACHE["onlineList"]
             for user in o.users:
-                send_msg(addr, msg, user)
+                send_msg(addr, msg, user, False)
         else:
-            send_msg(addr, msg, name)
+            send_msg(addr, msg, name, True)
 
 
 def logout(addr, args):
