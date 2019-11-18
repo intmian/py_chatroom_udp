@@ -10,7 +10,7 @@
 
 
 def color_str(s: str, style: int = -1, font_color: int = -1, background: int = -1) -> str:
-    tpl = r"\033[%sm%s\033[0m"
+    tpl = "\033[%sm%s\033[0m"
     cmd = ""
     if style != -1:
         cmd += str(style)
