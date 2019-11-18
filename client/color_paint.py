@@ -10,17 +10,19 @@
 
 
 def color_str(s: str, style: int = -1, font_color: int = -1, background: int = -1) -> str:
-    tpl = r"\033[%sm%s\033[0m!"
+    tpl = r"\033[%sm%s\033[0m"
     cmd = ""
     if style != -1:
         cmd += str(style)
+    else:
+        cmd += "0"
     if font_color != -1:
         cmd += ";"
         cmd += str(font_color)
     if background != -1:
         cmd += ";"
         cmd += str(background)
-    return tpl % (cmd, str)
+    return tpl % (cmd, s)
 
 
 def red_paint(s: str):

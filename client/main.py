@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append('../')
+
 from net_tool.Server import Server, Router
 from client.c_router import udp_map
 from threading import Thread
