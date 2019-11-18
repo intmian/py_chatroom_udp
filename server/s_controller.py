@@ -72,14 +72,48 @@ def get_list(addr, args):
             "list": None
         })
 
-def send_msg(addr:Tuple[str,int],msg:str,from_name:str):
-    UDP_SENIOR_IO.send_json(addr,{
-        g
+
+def send_msg(addr: Tuple[str, int], msg: str, from_name: str):
+    UDP_SENIOR_IO.send_json(addr, {
+        "mode": "getMsg",
+        "from": from_name,
+        "msg": msg
     })
 
+
 def msg(addr, args):
-    pass
+    to, msg, cookie = args["to"], args["msg"], args["cookie"]
+    flag, name = verify_cookie(cookie)
+    if not flag:
+        UDP_SENIOR_IO.send_json(addr, {
+            "mode": "replyMsg",
+            "type": False
+        })
+    else:
+        UDP_SENIOR_IO.send_json(addr, {
+            "mode": "replyMsg",
+            "type": True
+        })
+        if to == "":
+            o: OnlineList = CACHE["onlineList"]
+            for user in o.users:
+                send_msg(addr, msg, user)
+        else:
+            send_msg(addr, msg, name)
 
 
 def logout(addr, args):
-    pass
+    cookie = args["cookie"]
+    flag, name = verify_cookie(cookie)
+    if flag:
+        UDP_SENIOR_IO.send_json(addr, {
+            "mode": "replyLogout",
+            "type": True
+        })
+        o: OnlineList = CACHE["onlineList"]
+        o.remove_user(cookie)
+    else:
+        UDP_SENIOR_IO.send_json(addr, {
+            "mode": "replyLogout",
+            "type": False
+        })

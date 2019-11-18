@@ -81,13 +81,13 @@ class OnlineList:
         self.sessions[cookie] = user
         return cookie
 
-    def remove_user(self, user: AnyStr, cookie: bytes) -> bool:
-        if self.sessions[cookie] != user:
-            return True
-        else:
-            self.sessions.pop(cookie)
-            self.users.remove(user)
+    def remove_user(self, cookie: bytes) -> bool:
+        if cookie not in self.sessions:
             return False
+        else:
+            user = self.sessions.pop(cookie)
+            self.users.remove(user)
+            return True
 
 
 ACCOUNT = Accounts()
