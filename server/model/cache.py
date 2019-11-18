@@ -1,6 +1,7 @@
 import os
 from typing import *
 from json import dump, load
+import random
 
 
 class Accounts:
@@ -18,6 +19,9 @@ class Accounts:
             self.__load()
         else:
             self.__database: Dict[str:List] = {}
+
+    def __del__(self):
+        self.dump()
 
     def dump(self):
         fw = open('user_info.json', 'w', encoding='utf-8')
@@ -56,5 +60,33 @@ class Cache:
         return self.__data[key]
 
 
+class OnlineList:
+    def __init__(self):
+        self.users = Set()
+        self.sessions = Dict()  # 对应用户端的cookie
+
+    @staticmethod
+    def new_cookie() -> bytes:
+        seed = b"1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+=-"
+        s = random.sample(seed, 10)
+        return s
+
+    def add_user(self, user: AnyStr):
+        self.users.add(user)
+        self.sessions[self.new_cookie()] = user
+
+    def remove_user(self, user: AnyStr, cookie: bytes) -> bool:
+        if self.sessions[cookie] != user:
+            return True
+        else:
+            self.sessions.pop(cookie)
+            self.users.remove(user)
+            return False
+
+
 ACCOUNT = Accounts()
 CACHE = Cache()
+
+seed = b"this is a A"
+CACHE.set("randB", random.shuffle(seed))  # 设置服务器端随机数用于登录时校验
+CACHE.set("onlineList", OnlineList())  # 在线名单
