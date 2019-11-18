@@ -33,3 +33,7 @@ def blue_paint(s: str):
 
 def green_paint(s: str):
     print(color_str(s, font_color=32))
+
+
+def hint_paint(s: str):
+    print(color_str(s, font_color=35))

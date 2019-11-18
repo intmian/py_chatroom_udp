@@ -7,6 +7,9 @@ from client.setting import SETTING
 # 全体信息 白色
 # 私信     绿色
 # 失败     红色
+from net_tool.SeniorNetIo import UDP_SENIOR_IO
+
+
 def reply_sign_up(addr, args):
     type_ = args["type"]
     if type_:
@@ -19,7 +22,9 @@ def reply_login(addr, args):
     suc = args["success"]
     if suc:
         cp.blue_paint("登录成功")
+        cp.blue_paint(args["name"]+" 欢迎回来")
         SETTING.set["cookie"] = args["cookie"]
+        UDP_SENIOR_IO.set_cookie(args["cookie"])
     else:
         cp.red_paint("登录失败")
 

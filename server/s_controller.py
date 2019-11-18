@@ -45,13 +45,15 @@ def login(addr, args):
         UDP_SENIOR_IO.send_json(addr, {
             "mode": "replyLogin",
             "success": True,
-            "cookie": cookie
+            "cookie": cookie,
+            "name": name
         })
     else:
         UDP_SENIOR_IO.send_json(addr, {
             "mode": "replyLogin",
             "success": False,
-            "cookie": ""
+            "cookie": "",
+            "name": ""
         })
 
 

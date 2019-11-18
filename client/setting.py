@@ -9,3 +9,4 @@ class Setting:
 
 
 SETTING = Setting()
+ADDR = (SETTING.set["host"],23333)
