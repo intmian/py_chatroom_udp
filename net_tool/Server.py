@@ -7,11 +7,15 @@ from typing import *
 
 
 class Router:
-    def __init__(self, func_map: Dict[str, Callable[[Tuple[str, int], Dict[str, Any]], NoReturn]]):
+    def __init__(self, func_map: Dict[str, Callable[[Tuple[str, int], Dict[str, Any]], NoReturn]],
+                 if_log: bool = False):
         self.__map = func_map
+        self.__log = if_log
 
     def route(self, addr, data):
         re = json.loads(data)
+        if self.__log:
+            print("[log](%s %d) %s" % (addr[0], addr[1], re["mode"]))
         self.__map[re["mode"]](addr, re)
 
 

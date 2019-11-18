@@ -3,7 +3,7 @@ from server.s_router import udp_map
 
 
 def main():
-    udp_router = Router(udp_map)
+    udp_router = Router(udp_map, True)
     chat_server = Server(udp_router)
     chat_server.listen()
 

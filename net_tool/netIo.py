@@ -42,5 +42,8 @@ def net_is_used(port, ip='127.0.0.1'):
 UDP_IO = None
 try:
     UDP_IO = UdpIo(23333)
+    print("[log]绑定端口于23333")
 except:
     UDP_IO = UdpIo(0)
+    print("[log]绑定端口于随机端口")
+

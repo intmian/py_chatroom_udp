@@ -71,9 +71,15 @@ class OnlineList:
         s = random.sample(seed, 10)
         return s
 
-    def add_user(self, user: AnyStr):
+    def add_user(self, user: AnyStr) -> bytes:
+        """
+        :param user:
+        :return: cookie
+        """
         self.users.add(user)
-        self.sessions[self.new_cookie()] = user
+        cookie = self.new_cookie()
+        self.sessions[cookie] = user
+        return cookie
 
     def remove_user(self, user: AnyStr, cookie: bytes) -> bool:
         if self.sessions[cookie] != user:
