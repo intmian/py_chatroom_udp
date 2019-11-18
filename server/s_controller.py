@@ -4,7 +4,7 @@ from net_tool.SeniorNetIo import UDP_SENIOR_IO
 from typing import *
 
 
-def verify_cookie(cookie: bytes) -> tuple[bool, Any]:
+def verify_cookie(cookie: bytes) -> Tuple[bool, Any]:
     """
     :param cookie:
     :return: if_success, user_name

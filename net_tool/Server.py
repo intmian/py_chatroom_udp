@@ -32,7 +32,7 @@ class Server:
     def listen(self):
         while True:
             data, addr = self.__protocol.receive()
-            t = Thread(target=self.__router.route(addr, data), args=(data, addr), daemon=True)
+            t = Thread(target=self.__router.route, args=(addr, data), daemon=True)
             self.__threads.append(t)
             t.start()
 

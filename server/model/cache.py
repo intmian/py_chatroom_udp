@@ -15,21 +15,25 @@ class Accounts:
     """
 
     def __init__(self):
+        self.__database = None
+        self.__json_file = None
         if os.path.exists('user_info.json'):
             self.__load()
         else:
             self.__database: Dict[str:List] = {}
+        self.__json_file = open('user_info.json', 'w', encoding='utf-8')  # 因为_del_里面不能有依赖项open...
 
     def __del__(self):
         self.dump()
 
     def dump(self):
-        fw = open('user_info.json', 'w', encoding='utf-8')
-        dump(self.__database, fw, ensure_ascii=False, indent=4)
+        dump(self.__database, self.__json_file, ensure_ascii=False, indent=4)
+        self.__json_file.close()
 
     def __load(self):
-        fw = open('user_info.json', 'w', encoding='utf-8')
-        self.__database = load(fw, ensure_ascii=False, indent=4)
+        fw = open('user_info.json', 'r', encoding='utf-8')
+        self.__database = load(fw)
+        fw.close()
 
     def new_user(self, acc: str, password_d: str, name: str) -> bool:
         for acc_ in self.__database:
@@ -39,7 +43,7 @@ class Accounts:
 
     def get_user(self, acc) -> (str, str):
         """
-        :rtype: 返回用户名和hash过的密码,没有就返回False
+        :returns: 返回用户名和hash过的密码,没有就返回False
         """
         if str not in self.__database:
             return False
@@ -62,8 +66,8 @@ class Cache:
 
 class OnlineList:
     def __init__(self):
-        self.users = Set()
-        self.sessions = Dict()  # 对应用户端的cookie
+        self.users = set()
+        self.sessions = dict()  # 对应用户端的cookie
 
     @staticmethod
     def new_cookie() -> bytes:
@@ -92,7 +96,4 @@ class OnlineList:
 
 ACCOUNT = Accounts()
 CACHE = Cache()
-
-seed = b"this is a A"
-CACHE.set("randB", random.shuffle(seed))  # 设置服务器端随机数用于登录时校验
 CACHE.set("onlineList", OnlineList())  # 在线名单
