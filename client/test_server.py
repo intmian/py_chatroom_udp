@@ -1,10 +1,12 @@
 import sys
 
 sys.path.append('../')
-from net_tool.netIo import UdpIo
-
-u = UdpIo(1029)
+from net_tool.SeniorNetIo import UDP_SENIOR_IO
 
 addr = input("addr")
-port = input("port")
-u.send((addr, int(port)), "this is a test".encode("utf-8"))
+port = 23333
+UDP_SENIOR_IO.set_cookie("test")
+UDP_SENIOR_IO.send_json((addr, port), {
+    "mode": "test",
+    "aaa": "bbb"
+})

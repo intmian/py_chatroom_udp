@@ -17,7 +17,7 @@ class NetIo:
 
 class UdpIo(NetIo):
 
-    def __init__(self, port: int = 12225):
+    def __init__(self, port: int = 0):
         self.__socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.__socket.bind(('127.0.0.1', port))
 
@@ -39,10 +39,8 @@ def net_is_used(port, ip='127.0.0.1'):
         return False
 
 
-p = 12333
 UDP_IO = None
-while True:
-    if net_is_used(p):
-        UDP_IO = UdpIo(p)
-    else:
-        p += 1
+try:
+    UDP_IO = UdpIo(23333)
+except:
+    UDP_IO = UdpIo(0)
