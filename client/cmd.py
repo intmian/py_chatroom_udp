@@ -7,7 +7,32 @@ import hashlib
 def cmd():
     help_()
     print("\n")
-    whit
+    while True:
+        c = input()
+        if c[0] == "#":
+            args = c.split()
+            mode = args[0][1:]
+            if mode == "help":
+                help_()
+            elif mode == "login":
+                login(args[1],args[2])
+            elif mode == "signup":
+                sign_up(args[0],args[1],args[2])
+            elif mode == "list":
+                list_()
+            elif mode == "logout":
+                logout()
+            elif mode == "quit":
+                exit(0)
+            else:
+                cp.red_paint("未知指令")
+        elif c[0] == "@":
+            args = c.split()
+            msg(args[1],args[0][1:])
+        else:
+            args = c.split()
+            msg(args[1])
+
 
 
 def help_():
@@ -56,4 +81,9 @@ def msg(msg, to="", ):
         "mode": "msg",
         "msg": msg,
         "to": to
+    })
+
+def logout():
+    UDP_SENIOR_IO.send_json(ADDR, {
+        "mode": "logout",
     })
