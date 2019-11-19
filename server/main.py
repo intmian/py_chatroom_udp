@@ -1,4 +1,5 @@
 import sys
+from threading import Thread
 
 sys.path.append('../')
 
@@ -9,7 +10,9 @@ from server.s_router import udp_map
 def main():
     udp_router = Router(udp_map, True)
     chat_server = Server(udp_router)
-    chat_server.listen()
+    t = Thread(target=chat_server.listen, daemon=True)
+    t.start()
+    input()
 
 
 if __name__ == '__main__':
