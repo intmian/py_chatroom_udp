@@ -114,7 +114,7 @@ def msg(addr, args):
         if to == "":
             o: OnlineList = CACHE.get("onlineList")
             for user in o.users:
-                send_msg(o.addrs[user], msg, user, False)
+                send_msg(o.addrs[user], msg, name, False)
         else:
             o: OnlineList = CACHE.get("onlineList")
             send_msg(o.addrs[to], msg, name, True)
