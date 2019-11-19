@@ -1,7 +1,9 @@
 import sys
-from threading import Thread
 
 sys.path.append('../')
+from threading import Thread
+
+from server.model.cache import ACCOUNT
 
 from net_tool.Server import Server, Router
 from server.s_router import udp_map
@@ -13,6 +15,7 @@ def main():
     t = Thread(target=chat_server.listen, daemon=True)
     t.start()
     input()
+    ACCOUNT.dump()
 
 
 if __name__ == '__main__':

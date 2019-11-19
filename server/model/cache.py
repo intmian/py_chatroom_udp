@@ -23,9 +23,6 @@ class Accounts:
             self.__database: Dict[str:List] = {}
         self.__json_file = open('user_info.json', 'w', encoding='utf-8')  # 因为_del_里面不能有依赖项open...
 
-    def __del__(self):
-        self.dump()
-
     def dump(self):
         dump(self.__database, self.__json_file, ensure_ascii=False, indent=4)
         self.__json_file.close()
