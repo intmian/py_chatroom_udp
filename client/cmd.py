@@ -6,7 +6,6 @@ import hashlib
 
 def cmd():
     help_()
-    print("\n")
     while True:
         c = input()
         if c[0] == "#":
@@ -17,7 +16,7 @@ def cmd():
             elif mode == "login":
                 login(args[1],args[2])
             elif mode == "signup":
-                sign_up(args[0],args[1],args[2])
+                sign_up(args[1],args[2],args[3])
             elif mode == "list":
                 list_()
             elif mode == "logout":
@@ -30,15 +29,13 @@ def cmd():
             args = c.split()
             msg(args[1],args[0][1:])
         else:
-            args = c.split()
-            msg(args[1])
+            msg(c)
 
 
 
 def help_():
     cp.blue_paint(
-        """
-命令列表
+        """命令列表
 帮助 #help
 登录 #login account password
 注册 #signup account password name
@@ -46,8 +43,7 @@ def help_():
 登出 #logout
 退出 #quit
 私信 @name message
-公屏发言 message
-        """
+公屏发言 message"""
     )
 
 
@@ -87,3 +83,4 @@ def logout():
     UDP_SENIOR_IO.send_json(ADDR, {
         "mode": "logout",
     })
+    UDP_SENIOR_IO.remove_cookie()

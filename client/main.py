@@ -9,7 +9,7 @@ from client.cmd import cmd
 
 
 def main():
-    udp_router = Router(udp_map, True)
+    udp_router = Router(udp_map)
     listen_server = Server(udp_router)
     t = Thread(target=listen_server.listen, daemon=True)
     t.start()

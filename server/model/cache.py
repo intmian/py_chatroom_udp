@@ -40,13 +40,14 @@ class Accounts:
             if acc == acc_ or name == self.__database[acc_][1]:
                 return False
         self.__database[acc] = [name, password_d]
+        return True
 
     def get_user(self, acc) -> (str, str):
         """
         :returns: 返回用户名和hash过的密码,没有就返回False
         """
-        if str not in self.__database:
-            return False
+        if acc not in self.__database:
+            return None, None
         else:
             acc_ = self.__database[acc]
             return acc_[0], acc_[1]
@@ -68,14 +69,15 @@ class OnlineList:
     def __init__(self):
         self.users = set()
         self.sessions = dict()  # 对应用户端的cookie
+        self.addrs = dict()  # name : ipport
 
     @staticmethod
-    def new_cookie() -> bytes:
-        seed = b"1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+=-"
+    def new_cookie() -> str:
+        seed = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+=-"
         s = random.sample(seed, 10)
-        return s
+        return "".join(s)
 
-    def add_user(self, user: AnyStr) -> bytes:
+    def add_user(self, user: AnyStr, addr: Tuple) -> str:
         """
         :param user:
         :return: cookie
@@ -83,6 +85,7 @@ class OnlineList:
         self.users.add(user)
         cookie = self.new_cookie()
         self.sessions[cookie] = user
+        self.addrs[user] = addr
         return cookie
 
     def remove_user(self, cookie: bytes) -> bool:

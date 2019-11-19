@@ -12,15 +12,17 @@ class Router:
         self.__map = func_map
         self.__log = if_log
 
-    def route(self, addr, data):
+    def route(self, addr, data, debug = False):
         re = json.loads(data)
         if "mode" not in re.keys():  # 过滤一下扫描的
-            print("[log](%s %d) %s" % (addr[0], addr[1], "错误调用"))
+            if self.__log:
+                print("[log](%s %d) %s" % (addr[0], addr[1], "错误调用"))
             return
         if self.__log:
             print("[log](%s %d) %s" % (addr[0], addr[1], re["mode"]))
         if re["mode"] not in self.__map:
-            print("[log](%s %d) %s" % (addr[0], addr[1], "错误调用"))
+            if self.__log:
+                print("[log](%s %d) %s" % (addr[0], addr[1], "错误调用"))
             return
         self.__map[re["mode"]](addr, re)
 

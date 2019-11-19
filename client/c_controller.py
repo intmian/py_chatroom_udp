@@ -1,7 +1,6 @@
 import client.color_paint as cp
 from client.setting import SETTING
 
-
 # Callable[Tuple[str, int], Dict[str, Any]
 # 系统信息 蓝色
 # 全体信息 白色
@@ -22,7 +21,7 @@ def reply_login(addr, args):
     suc = args["success"]
     if suc:
         cp.blue_paint("登录成功")
-        cp.blue_paint(args["name"]+" 欢迎回来")
+        cp.blue_paint(args["name"] + " 欢迎回来")
         SETTING.set["cookie"] = args["cookie"]
         UDP_SENIOR_IO.set_cookie(args["cookie"])
     else:
@@ -30,7 +29,7 @@ def reply_login(addr, args):
 
 
 def reply_list(addr, args):
-    status, list_ = args["status", "list"]
+    status, list_ = args["status"], args["list"]
     if status:
         cp.blue_paint("在线名单：")
         for name in list_:
@@ -55,4 +54,6 @@ def get_msg(addr, args):
 def reply_logout(addr, args):
     t = args["type"]
     if not t:
-        cp.red_paint("退出登录失败")
+        cp.red_paint("退出登录失败: 无有效cookie")
+    else:
+        cp.blue_paint("成功登出")

@@ -6,5 +6,5 @@ udp_map = {
     "replyList": controller.reply_list,
     "replyMsg": controller.reply_msg,
     "getMsg": controller.get_msg,
-    "replyLogout" : controller.reply_logout
+    "replyLogout": controller.reply_logout
 }

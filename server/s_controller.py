@@ -9,7 +9,7 @@ def verify_cookie(cookie: bytes) -> Tuple[bool, Any]:
     :param cookie:
     :return: if_success, user_name
     """
-    o: OnlineList = CACHE["onlineList"]
+    o: OnlineList = CACHE.get("onlineList")
     if cookie in o.sessions:
         return True, o.sessions[cookie]
     else:
@@ -25,7 +25,7 @@ def sign_up(addr, args):
     suc = ACCOUNT.new_user(args["account"], args["pwd"], args["name"])
     if suc:
         UDP_SENIOR_IO.send_json(addr, {
-            "mode": "replySighUp",
+            "mode": "replySignUp",
             "type": True,
             "hint": ""
         })
@@ -40,8 +40,8 @@ def sign_up(addr, args):
 def login(addr, args):
     name, hash_d = ACCOUNT.get_user(args["account"])
     if hash_d == args["pwd"]:
-        o: OnlineList = CACHE["onlineList"]
-        cookie = o.add_user(name)
+        o: OnlineList = CACHE.get("onlineList")
+        cookie = o.add_user(name, addr)
         UDP_SENIOR_IO.send_json(addr, {
             "mode": "replyLogin",
             "success": True,
@@ -58,19 +58,26 @@ def login(addr, args):
 
 
 def get_list(addr, args):
+    if "cookie" not in args:
+        UDP_SENIOR_IO.send_json(addr, {
+            "mode": "replyList",
+            "status": False,
+            "list": None
+        })
+        return
     cookie = args["cookie"]
     flag, name = verify_cookie(cookie)
-    o: OnlineList = CACHE["onlineList"]
+    o: OnlineList = CACHE.get("onlineList")
     if flag:
         UDP_SENIOR_IO.send_json(addr, {
             "mode": "replyList",
             "status": True,
-            "list": o.users
+            "list": list(o.users)
         })
     else:
         UDP_SENIOR_IO.send_json(addr, {
             "mode": "replyList",
-            "status": True,
+            "status": False,
             "list": None
         })
 
@@ -85,6 +92,13 @@ def send_msg(addr: Tuple[str, int], msg: str, from_name: str, private: bool):
 
 
 def msg(addr, args):
+    if "cookie" not in args:
+        UDP_SENIOR_IO.send_json(addr, {
+            "mode": "replyList",
+            "status": True,
+            "list": None
+        })
+        return
     to, msg, cookie = args["to"], args["msg"], args["cookie"]
     flag, name = verify_cookie(cookie)
     if not flag:
@@ -98,14 +112,22 @@ def msg(addr, args):
             "type": True
         })
         if to == "":
-            o: OnlineList = CACHE["onlineList"]
+            o: OnlineList = CACHE.get("onlineList")
             for user in o.users:
-                send_msg(addr, msg, user, False)
+                send_msg(o.addrs[user], msg, user, False)
         else:
-            send_msg(addr, msg, name, True)
+            o: OnlineList = CACHE.get("onlineList")
+            send_msg(o.addrs[to], msg, name, True)
 
 
 def logout(addr, args):
+    if "cookie" not in args:
+        UDP_SENIOR_IO.send_json(addr, {
+            "mode": "replyList",
+            "status": True,
+            "list": None
+        })
+        return
     cookie = args["cookie"]
     flag, name = verify_cookie(cookie)
     if flag:
@@ -113,7 +135,7 @@ def logout(addr, args):
             "mode": "replyLogout",
             "type": True
         })
-        o: OnlineList = CACHE["onlineList"]
+        o: OnlineList = CACHE.get("onlineList")
         o.remove_user(cookie)
     else:
         UDP_SENIOR_IO.send_json(addr, {

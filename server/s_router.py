@@ -5,5 +5,7 @@ udp_map = {
     "test": test,
     "signUp": sign_up,
     "login": login,
-    "getList": get_list
+    "getList": get_list,
+    "msg": msg,
+    "logout": logout
 }
