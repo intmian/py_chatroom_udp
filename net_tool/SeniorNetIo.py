@@ -1,5 +1,4 @@
 from typing import Dict,AnyStr
-
 from net_tool.netIo import NetIo, UDP_IO
 from json import dumps
 
